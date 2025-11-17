@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flujo de Interfaz Simple</title>
+    <!-- Carga de Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuración de color y fuente para Tailwind --><script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Paleta de colores ajustada para alto contraste en fondo CLARO/COLORIDO
+                        'primary': '#e91e63', // Rosa vibrante para títulos (contraste)
+                        'secondary': '#fbc02d', // Amarillo oscuro/dorado para acentos
+                        'background': '#fce4ec', // Fondo de la tarjeta muy claro (opcional, si se usa sin transparencia)
+                        'card': 'rgba(255, 255, 255, 0.9)', // Blanco con 90% de opacidad para transparencia
+                        
+                        // TEXTO: Usaremos NEGRO sobre la tarjeta (blanca) para mayor legibilidad
+                        'text-dark': '#1f2937', // Casi negro para texto principal sobre la tarjeta
+                        'text-light': '#4b5563',// Gris oscuro para texto secundario sobre la tarjeta
+
+                        // Botones y Éxito/Advertencia, ajustados para ser más brillantes y contrastantes
+                        'button-primary': '#673ab7', // Morado oscuro (para "Vamos")
+                        'button-yes': '#4caf50',    // Verde vibrante (para "Abrir")
+                        'button-no': '#f44336',     // Rojo vibrante (para "Ahora no")
+                        'success': '#4caf50',   // Verde
+                        'warning': '#ff9800',   // Naranja
+                    },
+                    fontFamily: {
+                        /* Fuente principal para el cuerpo y botones: Times New Roman */
+                        sans: ['"Times New Roman"', 'Times', 'serif'], 
+                        
+                        /* Fuente decorativa (la dejamos para el título principal) */
+                        'display': ['"Dancing Script"', 'cursive'], 
+                        'cursive-display': ['"Dancing Script"', 'cursive'], 
+                    },
+                }
+            }
+        }
+    </script>
+    <!-- Enlace a Google Fonts para Dancing Script --><link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos del cuerpo para cubrir toda la pantalla con la imagen de fondo */
+        body {
+            background-image: url('https://image.slidesdocs.com/responsive-images/background/hearts-galore-an-eye-catching-3d-rendered-illustration-with-a-multicolored-heart-ideal-for-celebrating-valentines-day-powerpoint-background_2eabbd44ed__960_540.jpg');
+            background-size: cover; /* Cubre toda el área del cuerpo */
+            background-position: center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
+            position: relative;
+            min-height: 100vh; /* Asegura que el body tenga al menos el alto de la pantalla */
+        }
+        
+        /* Estilos para el Loader que cubre toda la pantalla mientras carga */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fce4ec; /* Fondo muy claro, similar al del cuerpo */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* Asegura que esté por encima de todo */
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Estilo del Spinner */
+        .spinner {
+            border: 6px solid rgba(255, 255, 255, 0.5);
+            border-top: 6px solid #e91e63; /* Usa el color primario */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Oculta todas las pantallas por defecto, solo la lógica JS las mostrará */
+        .screen {
+            display: none;
+            /* Eliminamos min-height: 100vh de .screen para que se ajuste al contenido de la tarjeta */
+            transition: opacity 0.3s ease-in-out;
+            position: relative;
+            /* Flex-grow y flex-shrink para que el contenido de la pantalla se ajuste dentro de la tarjeta */
+            flex-grow: 1; 
+            flex-shrink: 1;
+        }
+        
+        /* Estilo para el contenedor central: Usamos min-h-screen y flexbox para centrar todo */
+        #app-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* Estilo para simular la imagen del regalo y Snoopy */
+        .gift-image-box {
+            position: relative;
+            background-color: #e5e7eb; /* Fondo gris claro */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 2px solid #e91e63; /* Borde de la imagen: Rosa vibrante (primary) */
+        }
+
+        .gift-card {
+            background-color: #ffffff; /* Fondo blanco para la tarjeta dentro del regalo */
+            padding: 0.5rem 1rem;
+            border-radius: 0.3rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="font-sans">
+
+    <!-- Elemento de Audio MP3 (Oculto) -->
+    <audio id="backgroundMusic" loop>
+        <source src="audio.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <!-- LOADER: Se muestra inicialmente -->
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL: Oculto hasta que todo carga -->
+    <div id="mainContent" style="opacity: 0; visibility: hidden;">
+        <div id="app-container" class="w-full min-h-screen">
+            <!-- Contenedor Principal de la Aplicación. Añadimos max-h-[90vh] para que no se salga de la pantalla en móvil. --><div class="max-w-md w-full p-6 space-y-8 bg-card shadow-2xl rounded-3xl relative z-10 flex flex-col justify-center max-h-[90vh] sm:max-h-full">
+                
+                <!-- 1. Pantalla de Inicio (Home). Reducimos el padding vertical a p-4 sm:p-8 para ganar espacio en móvil. --><div id="homeScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+                    
+                    <!-- Contenedor de la Imagen (Similar al de Snoopy) --><div class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-primary overflow-hidden">
+                        <!-- IMAGEN ACTUALIZADA CON EL URL PROPORCIONADO -->
+                        <img src="https://s3.getstickerpack.com/storage/uploads/sticker-pack/66-timidez/sticker_19.png?70351f8966c802518e23ba66a7584199" alt="Sticker de Cumpleaños" class="w-full h-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/512x512/e91e63/ffffff?text=Cargando+Sticker'">
+                    </div>
+
+                    <!-- Título ajustado para ser 4xl en móvil y 5xl en pantallas más grandes --><h1 class="text-4xl sm:text-5xl font-bold text-primary mb-2 font-display">¡Hola, Bebé!</h1>
+                    <!-- Texto en display, más llamativo, pero en color oscuro para contraste con la tarjeta --><p class="text-text-dark text-xl mb-4 font-display">(⁠•⁠‿⁠•⁠)</p>
+                    <!-- Texto secundario más oscuro, pero legible --><p class="text-text-light text-base mb-8 font-sans">¡Haz clic en el botón siguiente! (⁠つ⁠✧⁠ω⁠✧⁠)⁠つ❤</p>
+                    
+                    <!-- Botón: Usando font-sans (Times New Roman) en lugar de font-display --><button onclick="showScreen('questionScreen')"
+                        class="w-full py-3 px-6 bg-button-primary text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-button-primary focus:ring-opacity-50 text-xl font-sans">
+                        ¡Vamos! *w*
+                    </button>
+                </div>
+
+                <!-- 2. Pantalla de Pregunta (ACTUALIZADA a la imagen de Regalo) --><!-- Botones uno al lado del otro en todos los tamaños de pantalla --><div id="questionScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+                    
+                    <!-- Simulación de la imagen del regalo y Snoopy --><div class="w-full max-w-[200px] h-[250px] gift-image-box mb-8">
+                        <div class="gift-card">
+                            <!-- Texto negro sobre fondo claro --><p class="font-display text-lg text-gray-800">ES UN</p>
+                            <p class="font-display text-3xl text-primary">GRAN ABRAZO</p>
+                            <p class="font-display text-xs text-gray-600">¡EN UN SOBRE!</p>
+                        </div>
+                        <span class="text-7xl absolute bottom-0 left-1/2 -translate-x-1/2 z-10" role="img" aria-label="Perro con brazos arriba">🐶</span>
+                    </div>
+
+                    <!-- Título en color oscuro y fuente display --><h1 class="text-3xl font-bold text-text-dark mb-4 sm:text-4xl font-display">¿Quieres abrirlo?</h1>
+                    <!-- Párrafo en color secundario y fuente display --><p class="text-xl text-text-light mb-10 font-sans">¯\⁠_⁠(⁠ツ⁠)⁠_⁠/⁠¯</p>
+
+                    <!-- CAMBIO: Utilizamos flex-row para que los botones estén uno al lado del otro en móvil. --><div class="flex flex-row space-x-4 w-full justify-center">
+                        <!-- Botón ¡Abrir! (Verde Brillante): APUNTA A 'messageScreen' --><button onclick="showScreen('messageScreen')"
+                            class="flex-1 py-3 px-3 bg-button-yes text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-button-yes focus:ring-opacity-50 font-sans text-base sm:text-lg">
+                            ¡Abrir!
+                        </button>
+                        <!-- Botón Ahora No (Rojo Brillante): Usando font-sans (Times New Roman) --><button onclick="showScreen('noScreen')"
+                            class="flex-1 py-3 px-3 bg-button-no text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-button-no focus:ring-opacity-50 font-sans text-base sm:text-lg">
+                            Ahora no
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 3. Pantalla de Mensaje (Anteriormente 'yesScreen', ahora 'messageScreen') --><div id="messageScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+                    
+                    <!-- Imagen de la Pareja (Placeholder de foto) --><!-- Usamos w-full max-w-[200px] para control en pantallas grandes/pequeñas --><div class="w-full max-w-[200px] h-32 bg-gray-200 rounded-lg flex items-center justify-center mb-4 shadow-lg overflow-hidden border-2 border-primary">
+                        <!-- Placeholder con color primario --><img src="https://placehold.co/512x340/e91e63/ffffff?text=Tu+Foto+Especial" alt="Foto de la pareja" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/512x340/e91e63/ffffff?text=Tu+Foto+Especial'">
+                    </div>
+
+                    <!-- EMOJI/TÍTULO --><h1 class="text-3xl font-bold text-text-dark mb-2 sm:text-4xl font-display">(⁠^⁠o⁠^⁠)</h1>
+                    
+                    <!-- Mensaje de amor largo (scrollable en caso de ser necesario) --><p class="text-text-light mb-6 text-sm sm:text-base font-sans overflow-y-auto max-h-40 p-2 border border-gray-200 rounded-lg text-left">
+                        Quiero que sepas que te amo, y que significas mucho para mí. Tenerte en mi vida le ha dado un sentido de dirección, y no cambiaría la felicidad en mi corazón por nada del mundo. Hasta el final, siempre serás el único amor de mi vida. Prometo estar ahí para ti cuando me necesites. Has tocado mi corazón de una manera que nadie más ha hecho, y estoy encantado/a de ser parte de tu vida. Cada día contigo es una bendición. Siempre atesoraré el día en que llegaste a mi vida dándome la dirección que necesitaba. Eres una bendición para mi mundo y soy afortunado/a de compartir este sentimiento de amor. Sigues siendo mi motivación.
+                    </p>
+
+                    <!-- Botón de Celebración (Texto cambiado a "Vamos de nuevo") --><button onclick="showScreen('homeScreen')"
+                        class="w-full py-3 px-6 bg-success text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition duration-300 focus:outline-none focus:ring-4 focus:ring-success focus:ring-opacity-50 font-sans text-xl">
+                        Vamos de nuevo
+                    </button>
+                </div>
+
+                <!-- 4. Pantalla de "No" (ACTUALIZADA) --><div id="noScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+                    
+                    <!-- Imagen de Snoopy Triste/Rogando (Placeholder) --><div class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-warning overflow-hidden">
+                        <img src="sticker_6.gif"Snoopy Triste" class="w-full h-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/512x512/ff9800/ffffff?text=Cargando+Snoopy'">
+                    </div>
+
+                    <h1 class="text-4xl font-bold text-text-dark mb-4 sm:text-5xl font-display">Aww...</h1>
+                    <p class="text-text-light mb-8 text-xl font-sans">¿Podemos intentarlo de nuevo, por favor? &gt;\_&lt;</p>
+                    
+                    <!-- Botón que devuelve a la interfaz de la pregunta: Usando font-sans (Times New Roman) --><button onclick="showScreen('questionScreen')"
+                        class="w-full py-3 px-6 bg-warning text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 transition duration-300 focus:outline-none focus:ring-4 focus:ring-warning focus:ring-opacity-50 font-sans text-xl">
+                        ¡Intentar de nuevo!
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Botón Flotante para Música (Abajo Derecha) --><button id="musicButton" onclick="toggleMusic(this)" 
+            class="fixed bottom-4 right-4 z-50 p-4 rounded-full bg-primary text-white shadow-xl hover:bg-pink-600 transition duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50"
+            aria-label="Reproducir/Pausar Música">
+            <!-- Icono de Play (por defecto: triángulo) --><svg id="musicIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+    </div>
+
+    <script>
+        // Lógica de Audio (Usando HTML Audio API para MP3)
+        let audioPlayer;
+        let isPlaying = false; 
+
+        /**
+         * Inicializa el reproductor de audio.
+         */
+        function initializeAudio() {
+            audioPlayer = document.getElementById('backgroundMusic');
+            // Nota: Aunque el loop está en el HTML, lo reafirmamos en JS
+            audioPlayer.loop = true; 
+        }
+
+        /**
+         * Alterna entre reproducir y pausar la música usando el API de HTML Audio.
+         * @param {HTMLElement} button - El elemento del botón que fue presionado.
+         */
+        function toggleMusic(button) {
+            if (!audioPlayer) {
+                console.error("El reproductor de audio no está inicializado.");
+                return;
+            }
+            
+            if (isPlaying) {
+                audioPlayer.pause();
+            } else {
+                // audioPlayer.play() debe ser llamado después de una interacción del usuario.
+                const playPromise = audioPlayer.play();
+
+                // Manejar la promesa para evitar errores de auto-reproducción bloqueada
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // La reproducción comenzó correctamente
+                    }).catch(error => {
+                        // La reproducción falló (ej. el navegador bloqueó la reproducción automática)
+                        console.error("La reproducción de audio falló:", error);
+                        // Se podría mostrar un mensaje de error al usuario aquí
+                    });
+                }
+            }
+            isPlaying = !isPlaying;
+            updateMusicButton(button);
+        }
+
+        /**
+         * Actualiza el ícono del botón (Play o Pause).
+         * @param {HTMLElement} button - El elemento del botón.
+         */
+        function updateMusicButton(button) {
+            const icon = button.querySelector('#musicIcon');
+            // Icono de Pausa (dos barras verticales)
+            if (isPlaying) {
+                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'; 
+            } else {
+                // Icono de Play (triángulo)
+                icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+            }
+        }
+
+        /**
+         * Muestra la pantalla solicitada y oculta las demás.
+         * @param {string} screenId - El ID de la pantalla a mostrar (e.g., 'homeScreen', 'questionScreen').
+         */
+        function showScreen(screenId) {
+            // Oculta todas las pantallas con un efecto de desvanecimiento
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => {
+                screen.style.opacity = 0;
+            });
+
+            // Espera un momento para el desvanecimiento y luego actualiza la visibilidad
+            setTimeout(() => {
+                screens.forEach(screen => {
+                    if (screen.id === screenId) {
+                        // Muestra la pantalla y la hace visible
+                        screen.style.display = 'flex';
+                        // Usa un pequeño retraso o requestAnimationFrame para garantizar que la transición de opacidad se aplique correctamente
+                        requestAnimationFrame(() => {
+                            screen.style.opacity = 1;
+                        });
+                    } else {
+                        // Oculta las demás
+                        screen.style.display = 'none';
+                    }
+                });
+            }, 300); // 300ms, matching the CSS transition duration
+        }
+
+        /**
+         * Inicializa la aplicación después de que todos los recursos han cargado.
+         */
+        window.onload = function() {
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('mainContent');
+            const musicButton = document.getElementById('musicButton');
+            
+            // 1. Iniciar la lógica de la aplicación (audio)
+            initializeAudio(); 
+            
+            // 2. Mostrar la pantalla de inicio, aunque aún esté oculta por el mainContent
+            showScreen('homeScreen'); 
+
+            // 3. Ocultar el loader con desvanecimiento
+            loader.style.opacity = 0;
+            
+            // 4. Mostrar la aplicación principal después de que el loader se desvanezca (0.5s en CSS)
+            setTimeout(() => {
+                loader.style.display = 'none';
+                mainContent.style.visibility = 'visible';
+                mainContent.style.opacity = 1;
+
+                // 5. INTENTO DE INICIO AUTOMÁTICO DE LA MÚSICA
+                const playPromise = audioPlayer.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // La reproducción comenzó (navegador lo permitió)
+                        isPlaying = true;
+                        updateMusicButton(musicButton);
+                    }).catch(error => {
+                        // La reproducción automática fue bloqueada (error común en navegadores)
+                        console.log("La reproducción automática de audio fue bloqueada. El usuario debe hacer clic en el botón de música.");
+                        // isPlaying permanece en false. El icono mostrará 'Play'.
+                        isPlaying = false;
+                        updateMusicButton(musicButton);
+                    });
+                } else {
+                    // Fallback para navegadores antiguos
+                    isPlaying = true;
+                    updateMusicButton(musicButton);
+                }
+
+            }, 500);
+        };
+    </script>
+</body>
+</html>
