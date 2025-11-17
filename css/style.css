@@ -1,0 +1,78 @@
+/* Estilos del cuerpo para cubrir toda la pantalla con la imagen de fondo */
+body {
+    background-image: url('https://image.slidesdocs.com/responsive-images/background/hearts-galore-an-eye-catching-3d-rendered-illustration-with-a-multicolored-heart-ideal-for-celebrating-valentines-day-powerpoint-background_2eabbd44ed__960_540.jpg');
+    background-size: cover; /* Cubre toda el área del cuerpo */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Mantiene la imagen fija al hacer scroll */
+    position: relative;
+    min-height: 100vh; /* Asegura que el body tenga al menos el alto de la pantalla */
+}
+
+/* Estilos para el Loader que cubre toda la pantalla mientras carga */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fce4ec; /* Fondo muy claro, similar al del cuerpo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Asegura que esté por encima de todo */
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* Estilo del Spinner */
+.spinner {
+    border: 6px solid rgba(255, 255, 255, 0.5);
+    border-top: 6px solid #e91e63; /* Usa el color primario */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Oculta todas las pantallas por defecto, solo la lógica JS las mostrará */
+.screen {
+    display: none;
+    /* Eliminamos min-height: 100vh de .screen para que se ajuste al contenido de la tarjeta */
+    transition: opacity 0.3s ease-in-out;
+    position: relative;
+    /* Flex-grow y flex-shrink para que el contenido de la pantalla se ajuste dentro de la tarjeta */
+    flex-grow: 1; 
+    flex-shrink: 1;
+}
+
+/* Estilo para el contenedor central: Usamos min-h-screen y flexbox para centrar todo */
+#app-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+/* Estilo para simular la imagen del regalo y Snoopy */
+.gift-image-box {
+    position: relative;
+    background-color: #e5e7eb; /* Fondo gris claro */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 2px solid #e91e63; /* Borde de la imagen: Rosa vibrante (primary) */
+}
+
+.gift-card {
+    background-color: #ffffff; /* Fondo blanco para la tarjeta dentro del regalo */
+    padding: 0.5rem 1rem;
+    border-radius: 0.3rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
