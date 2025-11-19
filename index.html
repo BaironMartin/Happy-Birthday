@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feliz Cumpleaños </title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <script>
         tailwind.config = {
             theme: {
@@ -16,7 +17,7 @@
                         'secondary': '#fbc02d', // Amarillo oscuro/dorado para acentos
                         'background': '#fce4ec', // Fondo de la tarjeta muy claro (opcional, si se usa sin transparencia)
                         'card': 'rgba(255, 255, 255, 0.9)', // Blanco con 90% de opacidad para transparencia
-                        
+
                         // TEXTO: Usaremos NEGRO sobre la tarjeta (blanca) para mayor legibilidad
                         'text-dark': '#1f2937', // Casi negro para texto principal sobre la tarjeta
                         'text-light': '#4b5563',// Gris oscuro para texto secundario sobre la tarjeta
@@ -30,20 +31,21 @@
                     },
                     fontFamily: {
                         /* Fuente principal para el cuerpo y botones: Times New Roman */
-                        sans: ['"Times New Roman"', 'Times', 'serif'], 
-                        
+                        sans: ['"Times New Roman"', 'Times', 'serif'],
+
                         /* Fuente decorativa (la dejamos para el título principal) */
-                        'display': ['"Dancing Script"', 'cursive'], 
-                        'cursive-display': ['"Dancing Script"', 'cursive'], 
+                        'display': ['"Dancing Script"', 'cursive'],
+                        'cursive-display': ['"Dancing Script"', 'cursive'],
                     },
                 }
             }
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body class="font-sans">
 
     <audio id="backgroundMusic" loop>
@@ -59,98 +61,154 @@
     <!-- CONTENIDO PRINCIPAL: Oculto hasta que todo carga -->
     <div id="mainContent" style="opacity: 0; visibility: hidden;">
         <div id="app-container" class="w-full min-h-screen">
-            <!-- Contenedor Principal de la Aplicación. Añadimos max-h-[90vh] para que no se salga de la pantalla en móvil. --><div class="max-w-md w-full p-6 space-y-8 bg-card shadow-2xl rounded-3xl relative z-10 flex flex-col justify-center max-h-[90vh] sm:max-h-full">
-                
-                <!-- 1. Pantalla de Inicio (Home). Reducimos el padding vertical a p-4 sm:p-8 para ganar espacio en móvil. --><div id="homeScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
-                    
-                    <!-- Contenedor de la Imagen (Similar al de Snoopy) --><div class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-primary overflow-hidden">
+            <!-- Contenedor Principal de la Aplicación. Añadimos max-h-[90vh] para que no se salga de la pantalla en móvil. -->
+            <div
+                class="max-w-md w-full p-6 space-y-8 bg-card shadow-2xl rounded-3xl relative z-10 flex flex-col justify-center max-h-[90vh] sm:max-h-full">
+
+                <!-- 1. Pantalla de Inicio (Home). Reducimos el padding vertical a p-4 sm:p-8 para ganar espacio en móvil. -->
+                <div id="homeScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+
+                    <!-- Contenedor de la Imagen (Similar al de Snoopy) -->
+                    <div
+                        class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-primary overflow-hidden">
                         <!-- IMAGEN ACTUALIZADA CON EL URL PROPORCIONADO -->
-                        <img src="src/img/e765a7e7-9cfb-458c-a57c-009be53bbb4f.gif" alt="Sticker de Cumpleaños" class="w-full  object-contain" onerror="this.onerror=null;this.src='https://placehold.co/512x512/e91e63/ffffff?text=Cargando+Sticker'">
+                        <img src="src/img/e765a7e7-9cfb-458c-a57c-009be53bbb4f.gif" alt="Sticker de Cumpleaños"
+                            class="w-full  object-contain"
+                            onerror="this.onerror=null;this.src='https://placehold.co/512x512/e91e63/ffffff?text=Cargando+Sticker'">
                     </div>
 
-                    <!-- Título ajustado para ser 4xl en móvil y 5xl en pantallas más grandes --><h1 class="text-4xl sm:text-5xl font-bold text-primary mb-2 font-display">¡Hola, Bebé!</h1>
-                    <!-- Texto en display, más llamativo, pero en color oscuro para contraste con la tarjeta --><p class="text-text-dark text-xl mb-4 font-display">(⁠•⁠‿⁠•⁠)</p>
-                    <!-- Texto secundario más oscuro, pero legible --><p class="text-text-light text-base mb-8 font-sans">¡Haz clic en el botón siguiente! (⁠つ⁠✧⁠ω⁠✧⁠)⁠つ❤</p>
-                    
-                    <!-- Botón: Usando font-sans (Times New Roman) en lugar de font-display --><button onclick="showScreen('questionScreen')"
+                    <!-- Título ajustado para ser 4xl en móvil y 5xl en pantallas más grandes -->
+                    <h1 class="text-4xl sm:text-5xl font-bold text-primary mb-2 font-display">¡Hola, Bebé!</h1>
+                    <!-- Texto en display, más llamativo, pero en color oscuro para contraste con la tarjeta -->
+                    <p class="text-text-dark text-xl mb-4 font-display">(⁠•⁠‿⁠•⁠)</p>
+                    <!-- Texto secundario más oscuro, pero legible -->
+                    <p class="text-text-light text-base mb-8 font-sans">¡Haz clic en el botón siguiente! (⁠つ⁠✧⁠ω⁠✧⁠)⁠つ❤
+                    </p>
+
+                    <!-- Botón: Usando font-sans (Times New Roman) en lugar de font-display --><button
+                        onclick="showScreen('questionScreen')"
                         class="w-full py-3 px-6 bg-button-primary text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-button-primary focus:ring-opacity-50 text-xl font-sans">
                         ¡Vamos! *w*
                     </button>
                 </div>
 
-                <!-- 2. Pantalla de Pregunta (ACTUALIZADA a la imagen de Regalo) --><!-- Botones uno al lado del otro en todos los tamaños de pantalla --><div id="questionScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
-                    
-                    <!-- Simulación de la imagen del regalo y Snoopy --><div class="w-full max-w-[200px] h-[250px] gift-image-box mb-8">
-                        <div class="gift-card">
-                            <!-- Texto negro sobre fondo claro --><p class="font-display text-lg text-gray-800">ES UN</p>
-                            <p class="font-display text-3xl text-primary">GRAN ABRAZO</p>
-                            <p class="font-display text-xs text-gray-600">¡EN UN SOBRE!</p>
-                        </div>
-                        <span class="text-7xl absolute bottom-0 left-1/2 -translate-x-1/2 z-10" role="img" aria-label="Perro con brazos arriba">🐶</span>
+                <!-- 2. Pantalla de Pregunta (ACTUALIZADA a la imagen de Regalo) --><!-- Botones uno al lado del otro en todos los tamaños de pantalla -->
+                <div id="questionScreen"
+                    class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+
+                    <!-- Simulación de la imagen del regalo y Snoopy -->
+                    <div
+                        class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-primary overflow-hidden">
+                        <!-- IMAGEN ACTUALIZADA CON EL URL PROPORCIONADO -->
+                        <img src="src/img/sticker_2.gif" alt="Sticker de Cumpleaños"
+                            class=" x-full w-full  object-contain"
+                            onerror="this.onerror=null;this.src='https://placehold.co/512x512/e91e63/ffffff?text=Cargando+Sticker'">
                     </div>
 
-                    <!-- Título en color oscuro y fuente display --><h1 class="text-3xl font-bold text-text-dark mb-4 sm:text-4xl font-display">¿Quieres abrirlo?</h1>
-                    <!-- Párrafo en color secundario y fuente display --><p class="text-xl text-text-light mb-10 font-sans">¯\⁠_⁠(⁠ツ⁠)⁠_⁠/⁠¯</p>
+                    <!-- Título en color oscuro y fuente display -->
+                    <h1 class="text-3xl font-bold text-text-dark mb-4 sm:text-4xl font-display">¿Quieres abrirlo?</h1>
+                    <!-- Párrafo en color secundario y fuente display -->
+                    <p class="text-xl text-text-light mb-10 font-sans">¯\⁠_⁠(⁠ツ⁠)⁠_⁠/⁠¯</p>
 
-                    <!-- CAMBIO: Utilizamos flex-row para que los botones estén uno al lado del otro en móvil. --><div class="flex flex-row space-x-4 w-full justify-center">
-                        <!-- Botón ¡Abrir! (Verde Brillante): APUNTA A 'messageScreen' --><button onclick="showScreen('messageScreen')"
+                    <!-- CAMBIO: Utilizamos flex-row para que los botones estén uno al lado del otro en móvil. -->
+                    <div class="flex flex-row space-x-4 w-full justify-center">
+                        <!-- Botón ¡Abrir! (Verde Brillante): APUNTA A 'messageScreen' --><button
+                            onclick="showScreen('messageScreen')"
                             class="flex-1 py-3 px-3 bg-button-yes text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-button-yes focus:ring-opacity-50 font-sans text-base sm:text-lg">
                             ¡Abrir!
                         </button>
-                        <!-- Botón Ahora No (Rojo Brillante): Usando font-sans (Times New Roman) --><button onclick="showScreen('noScreen')"
+                        <!-- Botón Ahora No (Rojo Brillante): Usando font-sans (Times New Roman) --><button
+                            onclick="showScreen('noScreen')"
                             class="flex-1 py-3 px-3 bg-button-no text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-button-no focus:ring-opacity-50 font-sans text-base sm:text-lg">
                             Ahora no
                         </button>
                     </div>
                 </div>
 
-                <!-- 3. Pantalla de Mensaje (Anteriormente 'yesScreen', ahora 'messageScreen') --><div id="messageScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
-                    
-                    <!-- Imagen de la Pareja (Placeholder de foto) --><!-- Usamos w-full max-w-[200px] para control en pantallas grandes/pequeñas --><div class="w-full max-w-[200px] h-32 bg-gray-200 rounded-lg flex items-center justify-center mb-4 shadow-lg overflow-hidden border-2 border-primary">
-                        <!-- Placeholder con color primario --><img src="https://placehold.co/512x340/e91e63/ffffff?text=Tu+Foto+Especial" alt="Foto de la pareja" class="w-full h-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/512x340/e91e63/ffffff?text=Tu+Foto+Especial'">
+                <!-- 3. Pantalla de Mensaje (Anteriormente 'yesScreen', ahora 'messageScreen') -->
+                <div id="messageScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+
+                    <!-- Imagen de la Pareja (Placeholder de foto) --><!-- Usamos w-full max-w-[200px] para control en pantallas grandes/pequeñas -->
+                    <div
+                        class="w-full max-w-[200px] h-32 bg-gray-200 rounded-lg flex items-center justify-center mb-4 shadow-lg overflow-hidden border-2 border-primary">
+                        <!-- Placeholder con color primario --><img
+                            src="https://placehold.co/512x340/e91e63/ffffff?text=Tu+Foto+Especial"
+                            alt="Foto de la pareja" class="w-full h-full object-cover"
+                            onerror="this.onerror=null;this.src='https://placehold.co/512x340/e91e63/ffffff?text=Tu+Foto+Especial'">
                     </div>
 
-                    <!-- EMOJI/TÍTULO --><h1 class="text-3xl font-bold text-text-dark mb-2 sm:text-4xl font-display">(⁠^⁠o⁠^⁠)</h1>
-                    
-                    <!-- Mensaje de amor largo (scrollable en caso de ser necesario) --><p class="text-text-light mb-6 text-sm sm:text-base font-sans overflow-y-auto max-h-40 p-2 border border-gray-200 rounded-lg text-left">
-                        Quiero que sepas que te amo, y que significas mucho para mí. Tenerte en mi vida le ha dado un sentido de dirección, y no cambiaría la felicidad en mi corazón por nada del mundo. Hasta el final, siempre serás el único amor de mi vida. Prometo estar ahí para ti cuando me necesites. Has tocado mi corazón de una manera que nadie más ha hecho, y estoy encantado/a de ser parte de tu vida. Cada día contigo es una bendición. Siempre atesoraré el día en que llegaste a mi vida dándome la dirección que necesitaba. Eres una bendición para mi mundo y soy afortunado/a de compartir este sentimiento de amor. Sigues siendo mi motivación.
+                    <!-- EMOJI/TÍTULO -->
+                    <h1 class="text-3xl font-bold text-text-dark mb-2 sm:text-4xl font-display">(⁠^⁠o⁠^⁠)</h1>
+
+                    <!-- Mensaje de amor largo (scrollable en caso de ser necesario) -->
+                    <p
+                        class="text-text-light mb-6 text-sm sm:text-base font-sans overflow-y-auto max-h-40 p-2 border border-gray-200 rounded-lg text-left">
+                        Hoy no estamos celebrando solo un año más… estamos celebrando a ti: a la única, la leyenda, la
+                        mujer que se cae, se sacude el polvo y renace con más carácter del que tenía ayer. Tú no eres
+                        fuerza… tú eres un terremoto con sonrisa.
+                        <br><br>
+
+                        Eres ese caos hermoso que nos enreda, que alegra, que provoca… y sí, te lo digo sin pena: tu
+                        locura hace una falta absurda cuando no estás. No me vayas a enderezar ni un solo tornillo, ¿me
+                        oyes? Tú eres así, sin filtro y sin disculpas. Y al que no le guste… que se acomode, y si no,
+                        pues (que lo chupe). 😉
+<br><br>
+                        Que este nuevo ciclo te llegue con salud de hierro, con esas bendiciones que aparecen cuando
+                        menos las esperas, con risas que te dejen sin aire, con gente que te quiera bonito y con caminos
+                        que se te vayan abriendo justo en el momento perfecto… y con ese toque de picardía tuyo que hace
+                        que todo a tu alrededor se ponga más interesante.
+<BR><br><strong></strong>
+                        Te quiero un montón.
+                        </strong>
+<br><br>
+                        Atentamente,<br>
+                        Tu Ing. de Confianza.
+                        <br><br>
+
+                        P.D.: Ya sabes… prohibido desmayarse de la emoción.
                     </p>
 
-                    <!-- Botón de Celebración (Texto cambiado a "Vamos de nuevo") --><button onclick="showScreen('homeScreen')"
+                    <!-- Botón de Celebración (Texto cambiado a "Vamos de nuevo") --><button
+                        onclick="showScreen('homeScreen')"
                         class="w-full py-3 px-6 bg-success text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition duration-300 focus:outline-none focus:ring-4 focus:ring-success focus:ring-opacity-50 font-sans text-xl">
                         Vamos de nuevo
                     </button>
                 </div>
 
-                <!-- 4. Pantalla de "No" (ACTUALIZADA) --><div id="noScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
-                    
-                    <!-- Imagen de Snoopy Triste/Rogando (Placeholder) --><div class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-warning overflow-hidden">
-<<<<<<< HEAD
-                        <img src="src/img/sticker_6.gif" alt="Snoopy Triste" class="w-full h-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/512x512/ff9800/ffffff?text=Cargando+Snoopy'">
-=======
-                        <img src="src/img/sticker_6.gif" alt="Triste" class="w-full h-full object-contain" onerror="this.onerror=null;this.src='https://placehold.co/512x512/ff9800/ffffff?text=Cargando+Snoopy'">
->>>>>>> b5747224f740e7f1be47301986661ea81793aa0f
+                <!-- 4. Pantalla de "No" (ACTUALIZADA) -->
+                <div id="noScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+
+                    <div
+                        class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-warning overflow-hidden">
+                        <img src="src/img/sticker_6.gif" alt="Snoopy Triste" class="w-full h-full object-contain"
+                            onerror="this.onerror=null;this.src='https://placehold.co/512x512/ff9800/ffffff?text=Cargando+Snoopy'">
                     </div>
 
                     <h1 class="text-4xl font-bold text-text-dark mb-4 sm:text-5xl font-display">Aww...</h1>
-                    <p class="text-text-light mb-8 text-xl font-sans">¿Podemos intentarlo de nuevo, por favor? &gt;\_&lt;</p>
-                    
-                    <!-- Botón que devuelve a la interfaz de la pregunta: Usando font-sans (Times New Roman) --><button onclick="showScreen('questionScreen')"
+                    <p class="text-text-light mb-8 text-xl font-sans">¿Podemos intentarlo de nuevo, por favor?
+                        &gt;\_&lt;</p>
+
+                    <!-- Botón que devuelve a la interfaz de la pregunta: Usando font-sans (Times New Roman) --><button
+                        onclick="showScreen('questionScreen')"
                         class="w-full py-3 px-6 bg-warning text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 transition duration-300 focus:outline-none focus:ring-4 focus:ring-warning focus:ring-opacity-50 font-sans text-xl">
                         ¡Intentar de nuevo!
                     </button>
                 </div>
             </div>
         </div>
-        
-        <!-- Botón Flotante para Música (Abajo Derecha) --><button id="musicButton" onclick="toggleMusic(this)" 
+
+        <!-- Botón Flotante para Música (Abajo Derecha) --><button id="musicButton" onclick="toggleMusic(this)"
             class="fixed bottom-4 right-4 z-50 p-4 rounded-full bg-primary text-white shadow-xl hover:bg-pink-600 transition duration-300 transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-primary focus:ring-opacity-50"
             aria-label="Reproducir/Pausar Música">
-            <!-- Icono de Play (por defecto: triángulo) --><svg id="musicIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>
+            <!-- Icono de Play (por defecto: triángulo) --><svg id="musicIcon" class="w-6 h-6" fill="currentColor"
+                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z" />
+            </svg>
         </button>
     </div>
 
     <!-- Enlace al archivo JavaScript externo -->
     <script src="js/main.js"></script>
 </body>
+
 </html>
