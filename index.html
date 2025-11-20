@@ -50,7 +50,7 @@
 <body class="font-sans">
 
     <audio id="backgroundMusic" loop>
-        <source src="src/music/audio.mp3" type="audio/mpeg">
+        <source src="src/music/" type="audio/mpeg">
         Tu navegador no soporta el elemento de audio.
     </audio>
 
@@ -65,6 +65,35 @@
             <!-- Contenedor Principal de la Aplicación. Añadimos max-h-[90vh] para que no se salga de la pantalla en móvil. -->
             <div
                 class="max-w-md w-full p-6 space-y-8 bg-card shadow-2xl rounded-3xl relative z-10 flex flex-col justify-center max-h-[90vh] sm:max-h-full">
+
+<!-- ****************************************************** -->
+                <!-- 0. NUEVA PANTALLA: NO DISPONIBLE (UNAVAILABLE) -->
+                <!-- ****************************************************** -->
+                <div id="unavailableScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+                    
+                    <!-- Icono de Reloj de Arena / Advertencia -->
+                    <div class="w-32 h-32 bg-white rounded-xl flex items-center justify-center mb-6 shadow-lg border-2 border-warning overflow-hidden">
+                        <span class="text-7xl text-warning" role="img" aria-label="Reloj de arena">⏳</span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl font-bold text-text-dark mb-4 font-display">¡Mensaje no disponible!</h1>
+                    <p class="text-text-light text-base mb-2 font-sans">
+                        El contenido especial está en proceso de actualización y mantenimiento.<br>
+                        <span class="font-bold text-primary">Estará disponible de nuevo el 19 de noviembre.</span>
+                    </p>
+                    
+                    <!-- CONTADOR REGRESIVO (NUEVO) -->
+                    <div id="countdown" class="text-3xl font-bold text-primary my-4 font-sans">
+                        <!-- El JS llenará este espacio con Días, Horas, Min, Seg -->
+                    </div>
+                    <!-- FIN CONTADOR REGRESIVO -->
+
+                    <!-- Botón para recargar o salir -->
+                    <button onclick="window.location.reload()"
+                        class="w-full py-3 px-6 bg-warning text-white font-semibold rounded-lg shadow-md hover:bg-orange-500 transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-warning focus:ring-opacity-50 text-xl font-sans">
+                        Revisar Más Tarde
+                    </button>
+                </div>
 
                 <!-- 1. Pantalla de Inicio (Home). Reducimos el padding vertical a p-4 sm:p-8 para ganar espacio en móvil. -->
                 <div id="homeScreen" class="screen flex flex-col items-center justify-center p-4 sm:p-8 text-center">
